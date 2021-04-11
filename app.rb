@@ -7,11 +7,11 @@ class DB
   end
 
   def find_by_manufacture(manufacture)
-    @collection.find({manufacture: manufacture})
+    @collection.find({manufacture: manufacture}).to_a
   end
 
-  def self.print_collection(collection)
-    collection.each {|record| puts record}
+  def find_later_then(year)
+    @collection.find({year: {'$gt': year.to_i}}).to_a
   end
 end
 
@@ -19,13 +19,13 @@ def handle_input(input)
   db = DB.new()
   case input
   in ['manufacture', manufacture]
-    DB.print_collection(db.find_by_manufacture(manufacture))
+    db.find_by_manufacture(manufacture)
   in ['later_then', year]
-    "Here will be later then #{year} output"
+    db.find_later_then(year)
   in ['options', id]
     "Here will be options #{id} output"
   in ['help']
-    puts """
+    """
     Flags for app.rb:
     manufacture <manufacture> -- finds all cars by manufacture
     later_then <year> -- finds all cars which were produced after year
@@ -33,8 +33,8 @@ def handle_input(input)
     help -- puts help
     """
   else
-    puts 'Wrong command. Print "ruby app.rb help" for help.'
+    'Wrong command. Print "ruby app.rb help" for help.'
   end
 end
 
-handle_input(ARGV)
+puts handle_input(ARGV)
