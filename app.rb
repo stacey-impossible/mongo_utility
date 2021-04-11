@@ -11,7 +11,11 @@ class DB
   end
 
   def find_later_then(year)
-    @collection.find({year: {'$gt': year.to_i}}).to_a
+    @collection.find({year: {'$gte': year.to_i}}).to_a
+  end
+
+  def find_by_id(id)
+    @collection.find({_id: BSON::ObjectId(id)}).first.dig('car_options')
   end
 end
 
@@ -23,7 +27,7 @@ def handle_input(input)
   in ['later_then', year]
     db.find_later_then(year)
   in ['options', id]
-    "Here will be options #{id} output"
+    db.find_by_id(id)
   in ['help']
     """
     Flags for app.rb:
