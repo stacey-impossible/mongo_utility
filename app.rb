@@ -1,3 +1,12 @@
+require 'mongo'
+
+class MongoOperations
+  def initialize()
+    @client = Mongo::Client.new(["#{ENV['MONGO_HOST']}:#{ENV['MONGO_PORT']}"], :database => 'cars')
+    @collection = @client[:cars]
+  end
+end
+
 def handle_input(input)
   case input
   in ["manufacture", manufacture]
